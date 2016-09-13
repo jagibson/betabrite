@@ -1,1 +1,3 @@
-alphasign
+git+https://github.com/jagibson/alphasign
+#alphasign
+AWSIoTPythonSDK
