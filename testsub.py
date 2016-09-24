@@ -6,6 +6,15 @@ import logging
 import time
 import getopt
 
+# Custom MQTT message callback
+def customCallback(client, userdata, message):
+	print("Received a new message: ")
+	print(message.payload)
+	print("from topic: ")
+	print(message.topic)
+	print("--------------\n\n")
+
+
 # Configure logging
 logger = None
 if sys.version_info[0] == 3:
@@ -19,8 +28,6 @@ streamHandler.setFormatter(formatter)
 logger.addHandler(streamHandler)
 
 
-
-# For certificate based connection
 myMQTTClient = AWSIoTMQTTClient("iottscript")
 # For Websocket connection
 # myMQTTClient = AWSIoTMQTTClient("myClientID", useWebsocket=True)
@@ -32,28 +39,17 @@ myMQTTClient.configureEndpoint("a34ps3jqnolue.iot.us-west-2.amazonaws.com", 8883
 myMQTTClient.configureCredentials("/home/montjoy/git/betabrite/certs/AWS_IoT_root_CA.pem", "/home/montjoy/git/betabrite/certs/73cb53c6db-private.pem.key", "/home/montjoy/git/betabrite/certs/73cb53c6db-certificate.pem.crt")
 # For Websocket, we only need to configure the root CA
 # myMQTTClient.configureCredentials("YOUR/ROOT/CA/PATH")
-myMQTTClient.configureOfflinePublishQueueing(-1)  # Infinite offline Publish queueing
-myMQTTClient.configureDrainingFrequency(2)  # Draining: 2 Hz
-myMQTTClient.configureConnectDisconnectTimeout(30)  # 10 sec
-myMQTTClient.configureMQTTOperationTimeout(20)  # 5 sec
+myMQTTClient.configureAutoReconnectBackoffTime(1, 32, 20)
+myMQTTClient.configureConnectDisconnectTimeout(10)  # 10 sec
+myMQTTClient.configureMQTTOperationTimeout(5)  # 5 sec
 
 
 myMQTTClient.connect()
-myMQTTClient.publish("$aws/things/Input_command/shadow/update", "HOLLBA", 0)
-#myMQTTClient.subscribe("$aws/things/Input_command/shadow/update", 1, customCallback)
-#myMQTTClient.unsubscribe("$aws/things/Input_command/shadow/update")
-myMQTTClient.disconnect()
+myMQTTClient.subscribe("$aws/things/Input_command/shadow/update", 0, customCallback)
 
+#loopCount = 0
+#while True:
+#	myMQTTClient.subscribe("$aws/things/Input_command/shadow/update", 0, customCallback)
+#	loopCount += 1
+#	time.sleep(2)
 
-# You're not connected to the Device Gateway
-#Go to the "Device Gateway connection" tab
-
-#Type in your desired Client ID or generate one using the "Generate client ID" button
-
-#Once the connection to the Device Gateway succeeds, Subscribe or Publish to topics using the "Subscribe to topic" and "Publish to topic" tabs
-
-#If the connection to the Device Gateway fails, ensure that your Client ID is less than 128 bytes and encoded in UTF-8
-
-# client ID 187f1
-# subscription topic "stuff"
-# max message capture 100
