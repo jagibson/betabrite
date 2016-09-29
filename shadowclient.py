@@ -56,7 +56,7 @@ myShadowClient.configureMQTTOperationTimeout(5)
 myShadowClient.connect()
 
 myDeviceShadow = myShadowClient.createShadowHandlerWithName("Input_command", True)
-myDeviceShadow.shadowDelete(customShadowCallback_Delete, 5)
+#myDeviceShadow.shadowDelete(customShadowCallback_Delete, 5)
 
 
 myJSONPayload = '{ "state": { "desired": { "message": "hello", "color": "RED", "font": "FIVE_HIGH_STD", "mode": "HOLD" } } }'
