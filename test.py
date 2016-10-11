@@ -11,6 +11,8 @@ colors = {
   "randomize": "alphasign.colors.AUTOCOLOR"
 }
 
+#print colors['red']
+
 modes = {
   "hold": "HOLD"
 }
@@ -25,12 +27,17 @@ modes = {
 # FULL_HEIGHT_STD same as SEVEN_HIGH_STD
 # SEVEN_SHADOW_FANCY same as SEVEN_HIGH_STD
 
-message = "test for sign"
-color = 'RED'
-mode = 'HOLD'
-font = 'FIVE_HIGH_STD'
+msg = "test for sign"
+msg_color = 'GREEN'
+msg_mode = 'HOLD'
+msg_font = 'FIVE_HIGH_STD'
 
 
+color = getattr(alphasign.colors, msg_color)
+mode = getattr(alphasign.modes, msg_mode)
+font = getattr(alphasign.charsets, msg_font)
+
+print color
 
 #print colors
 
@@ -38,17 +45,9 @@ def main():
   sign = alphasign.Serial(device='/dev/ttyUSB0')
   sign.connect()
 
-  #text = alphasign.Text("%sblah" % colors['red'], label="A")
-  #text = alphasign.Text("Hello World!", label="A", mode=alphasign.modes.THANK_YOU)
-  #text = alphasign.Text("%sthis text is fast" % alphasign.speeds.SPEED_2,
-                     #label="A",
-                     #mode=alphasign.modes.ROTATE)
-  #text = alphasign.Text("%stest" % alphasign.colors.RED, label="A", mode=alphasign.modes.HOLD)
-  #text = alphasign.Text("%stest" % alphasign.colors.RED, label="A", mode=alphasign.modes.HOLD)
-  #text = alphasign.Text("%sthis is a color and a longer sentence" % alphasign.charsets.FIVE_HIGH_STD, label="A")
-  #text.mode = alphasign.modes.SCROLL
+  #msg_color = 'alphasign.colors.' + color 
 
-  text = alphasign.Text("%s%stest3" % (alphasign.colors.RED, alphasign.charsets.FIVE_HIGH_STD), label="A", mode=alphasign.modes.HOLD)
+  text = alphasign.Text("%s%s%s" % (color, font, msg), label="A", mode=mode)
 
   sign.write(text)
 
