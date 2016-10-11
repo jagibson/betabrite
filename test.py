@@ -25,6 +25,11 @@ modes = {
 # FULL_HEIGHT_STD same as SEVEN_HIGH_STD
 # SEVEN_SHADOW_FANCY same as SEVEN_HIGH_STD
 
+message = "test for sign"
+color = 'RED'
+mode = 'HOLD'
+font = 'FIVE_HIGH_STD'
+
 
 
 #print colors
@@ -38,8 +43,12 @@ def main():
   #text = alphasign.Text("%sthis text is fast" % alphasign.speeds.SPEED_2,
                      #label="A",
                      #mode=alphasign.modes.ROTATE)
-  text = alphasign.Text("%sthis is wide" % alphasign.charsets.WIDE_STROKE_FIVE,
-                     label="A")
+  #text = alphasign.Text("%stest" % alphasign.colors.RED, label="A", mode=alphasign.modes.HOLD)
+  #text = alphasign.Text("%stest" % alphasign.colors.RED, label="A", mode=alphasign.modes.HOLD)
+  #text = alphasign.Text("%sthis is a color and a longer sentence" % alphasign.charsets.FIVE_HIGH_STD, label="A")
+  #text.mode = alphasign.modes.SCROLL
+
+  text = alphasign.Text("%s%stest3" % (alphasign.colors.RED, alphasign.charsets.FIVE_HIGH_STD), label="A", mode=alphasign.modes.HOLD)
 
   sign.write(text)
 
