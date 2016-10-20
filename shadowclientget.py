@@ -6,6 +6,29 @@ import logging
 import time
 import json
 import getopt
+import alphasign
+
+msg = "test for sign"
+msg_color = 'GREEN'
+msg_mode = 'HOLD'
+msg_font = 'FIVE_HIGH_STD'
+
+
+
+
+def betabrite():
+	color = getattr(alphasign.colors, msg_color)
+	mode = getattr(alphasign.modes, msg_mode)
+	font = getattr(alphasign.charsets, msg_font)
+
+	sign = alphasign.Serial(device='/dev/ttyUSB0')
+	sign.connect()
+
+	text = alphasign.Text("%s%s%s" % (color, font, msg), label="A", mode=mode)
+
+	sign.write(text)
+
+
 
 class shadowCallbackContainer:
 	def __init__(self, deviceShadowInstance):
