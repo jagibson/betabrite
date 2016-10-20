@@ -1,4 +1,6 @@
 git+https://github.com/jagibson/alphasign
 #alphasign
 AWSIoTPythonSDK
-Flask
+#Flask
+#uwsgi
+cherrypy
