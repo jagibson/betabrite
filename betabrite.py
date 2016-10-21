@@ -159,6 +159,8 @@ class StringGenerator(object):
         #myJSONPayload = '{ "state": { "desired": { "message": "hello", "color": "BLUE", "font": "FIVE_HIGH_STD", "mode": "HOLD" } } }'
         myDeviceShadow.shadowUpdate(jsonned, customShadowCallback_Update, 5)
 
+        myShadowClient.disconnect()
+
         
 if __name__ == '__main__':
     cherrypy.quickstart(StringGenerator())
