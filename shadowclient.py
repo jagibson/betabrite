@@ -59,5 +59,5 @@ myDeviceShadow = myShadowClient.createShadowHandlerWithName("Input_command", Tru
 #myDeviceShadow.shadowDelete(customShadowCallback_Delete, 5)
 
 
-myJSONPayload = '{ "state": { "desired": { "message": "hello", "color": "RED", "font": "FIVE_HIGH_STD", "mode": "HOLD" } } }'
+myJSONPayload = '{ "state": { "desired": { "message": "hello", "color": "BLUE", "font": "FIVE_HIGH_STD", "mode": "HOLD" } } }'
 myDeviceShadow.shadowUpdate(myJSONPayload, customShadowCallback_Update, 5)
