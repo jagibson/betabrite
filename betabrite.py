@@ -9,6 +9,19 @@ import logging
 import time
 import getopt
 from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTShadowClient
+import ConfigParser
+
+config = ConfigParser.ConfigParser()
+config.read('config.ini')
+
+iot_endpoint = config.get('general', 'iot_endpoint')
+iot_port = config.getint('general', 'iot_port')
+iot_device_name = config.get('general', 'iot_device_name')
+credentials_ca = config.get('general', 'credentials_ca')
+credentials_private_key= config.get('general', 'credentials_private_key')
+credentials_cert = config.get('general', 'credentials_cert')
+sign_device = config.get('general', 'sign_device')
+
 
 # Custom Shadow callback
 def customShadowCallback_Update(payload, responseStatus, token):
@@ -145,15 +158,15 @@ class StringGenerator(object):
 
         myShadowClient = None
         myShadowClient = AWSIoTMQTTShadowClient("basicShadowUpdater")
-        myShadowClient.configureEndpoint("a34ps3jqnolue.iot.us-west-2.amazonaws.com", 8883)
-        myShadowClient.configureCredentials("/home/montjoy/git/betabrite/certs/AWS_IoT_root_CA.pem", "/home/montjoy/git/betabrite/certs/73cb53c6db-private.pem.key", "/home/montjoy/git/betabrite/certs/73cb53c6db-certificate.pem.crt")
+        myShadowClient.configureEndpoint(iot_endpoint, iot_port)
+        myShadowClient.configureCredentials(credentials_ca, credentials_private_key, credentials_cert)
         myShadowClient.configureAutoReconnectBackoffTime(1, 32, 20)
         myShadowClient.configureConnectDisconnectTimeout(10)  # 10 sec
         myShadowClient.configureMQTTOperationTimeout(5)
 
         myShadowClient.connect()
 
-        myDeviceShadow = myShadowClient.createShadowHandlerWithName("Input_command", True)
+        myDeviceShadow = myShadowClient.createShadowHandlerWithName(iot_device_name, True)
 
 
         #myJSONPayload = '{ "state": { "desired": { "message": "hello", "color": "BLUE", "font": "FIVE_HIGH_STD", "mode": "HOLD" } } }'

@@ -7,8 +7,18 @@ import time
 import json
 import getopt
 import alphasign
+import ConfigParser
 
-#myJSONPayload = '{ "state": { "desired": { "message": "hello", "color": "RED", "font": "FIVE_HIGH_STD", "mode": "HOLD" } } }'
+config = ConfigParser.ConfigParser()
+config.read('config.ini')
+
+iot_endpoint = config.get('general', 'iot_endpoint')
+iot_port = config.getint('general', 'iot_port')
+iot_device_name = config.get('general', 'iot_device_name')
+credentials_ca = config.get('general', 'credentials_ca')
+credentials_private_key= config.get('general', 'credentials_private_key')
+credentials_cert = config.get('general', 'credentials_cert')
+sign_device = config.get('general', 'sign_device')
 
 
 def publish_to_sign(myJSONPayload):
@@ -19,7 +29,7 @@ def publish_to_sign(myJSONPayload):
 	mode = getattr(alphasign.modes, iot_message['state']['mode'])
 	font = getattr(alphasign.charsets, iot_message['state']['font'])
 
-	sign = alphasign.Serial(device='/dev/ttyUSB0')
+	sign = alphasign.Serial(device=sign_device)
 	sign.connect()
 
 	text = alphasign.Text("%s%s%s" % (color, font, msg), label="A", mode=mode)
@@ -49,6 +59,7 @@ class shadowCallbackContainer:
 
 
 
+
 logger = None
 if sys.version_info[0] == 3:
 	logger = logging.getLogger("core")  # Python 3
@@ -62,15 +73,15 @@ logger.addHandler(streamHandler)
 
 myShadowClient = None
 myShadowClient = AWSIoTMQTTShadowClient("basicShadowDeltaListener")
-myShadowClient.configureEndpoint("a34ps3jqnolue.iot.us-west-2.amazonaws.com", 8883)
-myShadowClient.configureCredentials("/home/montjoy/git/betabrite/certs/AWS_IoT_root_CA.pem", "/home/montjoy/git/betabrite/certs/73cb53c6db-private.pem.key", "/home/montjoy/git/betabrite/certs/73cb53c6db-certificate.pem.crt")
+myShadowClient.configureEndpoint(iot_endpoint, iot_port)
+myShadowClient.configureCredentials(credentials_ca, credentials_private_key, credentials_cert)
 myShadowClient.configureAutoReconnectBackoffTime(1, 32, 20)
 myShadowClient.configureConnectDisconnectTimeout(10)  # 10 sec
 myShadowClient.configureMQTTOperationTimeout(5)
 
 myShadowClient.connect()
 
-myDeviceShadow = myShadowClient.createShadowHandlerWithName("Input_command", True)
+myDeviceShadow = myShadowClient.createShadowHandlerWithName(iot_device_name, True)
 shadowCallbackContainer_Bot = shadowCallbackContainer(myDeviceShadow)
 
 myDeviceShadow.shadowRegisterDeltaCallback(shadowCallbackContainer_Bot.customShadowCallback_Delta)
