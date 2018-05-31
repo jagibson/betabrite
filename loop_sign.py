@@ -5,12 +5,10 @@ import time
 sign_device='/dev/ttyUSB0'
 
 colors = ["RED", "GREEN", "AMBER", "RAINBOW_1", "RAINBOW_2", "COLOR_MIX", "AUTOCOLOR"]
+modes = ["ROTATE", "HOLD", "ROLL_UP", "ROLL_DOWN", "ROLL_LEFT", "ROLL_RIGHT", "WIPE_UP", "WIPE_DOWN", "WIPE_LEFT", "WIPE_RIGHT", "SCROLL", "ROLL_IN", "ROLL_OUT", "WIPE_IN", "WIPE_OUT", "TWINKLE", "SPARKLE", "SNOW", "INTERLOCK", "SWITCH", "SPRAY", "STARBURST", "WELCOME", "SLOT_MACHINE", "THANK_YOU", "NO_SMOKING", "DONT_DRINK_DRIVE", "RUNNING_ANIMAL", "FIREWORKS", "TURBO_CAR"]
+fonts = ["FIVE_HIGH_STD", "SEVEN_HIGH_STD", "SEVEN_HIGH_FANCY"]
 
-
-
-#msg = "another sign"
-#msg = raw_input()
-
+msg = "THIS IS A TEST"
 msg_color = 'GREEN'
 msg_mode = 'HOLD'
 msg_font = 'SEVEN_HIGH_STD'
@@ -19,22 +17,35 @@ def reset_sign():
 	msg = ""
 	out_to_sign(msg, msg_color, msg_mode, msg_font)
 
-#def getattrs(msg_color, msg_mode, msg_font):
-#	color = getattr(alphasign.colors, msg_color)
-#	mode = getattr(alphasign.modes, msg_mode)
-#	font = getattr(alphasign.charsets, msg_font)
-#	return (color, mode, font)
+def static_test():
+	msg = "THIS IS A TEST"
+	msg_color = 'GREEN'
+	msg_mode = 'SLOT_MACHINE'
+	msg_font = 'SEVEN_HIGH_STD'
+	out_to_sign(msg, msg_color, msg_mode, msg_font)
 
 def colordemo():
 	for color in colors:
 		msg_color = color
 		msg = color
-		#getattrs(msg_color, msg_mode, msg_font)
 		out_to_sign(msg, msg_color, msg_mode, msg_font)
 		time.sleep(5)
 
+def fontdemo():
+	for font in fonts:
+		msg_font = font
+		msg = font
+		out_to_sign(msg, msg_color, msg_mode, msg_font)
+		time.sleep(5)
+
+def modedemo():
+	for mode in modes:
+		msg_mode = mode
+		msg = mode
+		out_to_sign(msg, msg_color, msg_mode, msg_font)
+		time.sleep(10)
+
 def out_to_sign(msg, color, mode, font):
-	#getattrs(msg_color, msg_mode, msg_font)
 	color = getattr(alphasign.colors, color)
 	mode = getattr(alphasign.modes, mode)
 	font = getattr(alphasign.charsets, font)
@@ -51,9 +62,12 @@ def ask_for_input():
 	out_to_sign(msg, msg_color, msg_mode, msg_font)
 
 def main():
-	ask_for_input()
-	colordemo()
+	#ask_for_input()
+	#colordemo()
+	#modedemo()
+	fontdemo()
 	#reset_sign()
+	#static_test()
 
 if __name__ == "__main__":
  	main()
