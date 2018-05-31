@@ -13,6 +13,8 @@ msg_color = 'GREEN'
 msg_mode = 'HOLD'
 msg_font = 'SEVEN_HIGH_STD'
 
+#print len(fonts)
+
 def reset_sign():
 	msg = ""
 	out_to_sign(msg, msg_color, msg_mode, msg_font)
@@ -29,7 +31,7 @@ def colordemo():
 		msg_color = color
 		msg = color
 		out_to_sign(msg, msg_color, msg_mode, msg_font)
-		time.sleep(5)
+		time.sleep(2)
 
 def fontdemo():
 	for font in fonts:
@@ -55,19 +57,56 @@ def out_to_sign(msg, color, mode, font):
 	text = alphasign.Text("%s%s%s" % (color, font, msg), label="A", mode=mode)
 	sign.write(text)
 
-def ask_for_input():
+def ask_for_input(msg_color):
+	msg_font = 'FIVE_HIGH_STD'
 	msg = "Type your message"
 	out_to_sign(msg, msg_color, msg_mode, msg_font)
 	msg = raw_input()
 	out_to_sign(msg, msg_color, msg_mode, msg_font)
 
+def ask_for_color():
+	colorstring = ''
+	msg_font = 'FIVE_HIGH_STD'
+	msg_mode = 'HOLD'
+	msg_color = 'RED'
+	colors_zero_indexed = len(colors) -1
+	msg = "Color? (0-" + str(colors_zero_indexed) + "), l,d"
+	out_to_sign(msg, msg_color, msg_mode, msg_font)
+	input_color = raw_input()
+	if input_color in (["l","L"]):
+		msg_mode = 'ROTATE'
+		for color in colors:
+			colorstring = colorstring + "(" + str(colors.index(color)) + ")-" + color + "   "
+		msg = colorstring
+		out_to_sign(msg, msg_color, msg_mode, msg_font)
+	elif input_color in (["d","D"]):
+		colordemo()
+	elif input_color in str(range(len(colors))):
+		#msg_color = input_color
+		print "color is " + input_color
+		msg_color = colors[int(input_color)]
+	else:
+		print "failed to match"
+	#out_to_sign(msg, msg_color, msg_mode, msg_font)
+	return msg_color
+
+
+
+
+
+
 def main():
-	#ask_for_input()
+	#msg = "THIS IS A TEST"
+	#msg_color = 'GREEN'
+	#msg_mode = 'HOLD'
+	#msg_font = 'SEVEN_HIGH_STD'
 	#colordemo()
 	#modedemo()
-	fontdemo()
+	#fontdemo()
 	#reset_sign()
 	#static_test()
+	msg_color=ask_for_color()
+	ask_for_input(msg_color)
 
 if __name__ == "__main__":
  	main()
