@@ -30,7 +30,7 @@ def static_test():
 def colordemo():
 	for color in colors:
 		msg_color = color
-		msg = color
+		msg = "(" + str(colors.index(color)) + ")-" + color
 		out_to_sign(msg, msg_color, msg_mode, msg_font)
 		time.sleep(2)
 
@@ -70,16 +70,8 @@ def colorchoice(colorstring):
 	end_loop = False
 	input_color = raw_input()
 	if input_color in (["l","L"]):
-		msg_mode = 'ROTATE'
-		for color in colors:
-			colorstring = colorstring + "(" + str(colors.index(color)) + ")-" + color + "   "
-		msg = colorstring
-		out_to_sign(msg, msg_color, msg_mode, msg_font)
-		time.sleep(11)
-	elif input_color in (["d","D"]):
 		colordemo()
 	elif input_color in str(range(len(colors))):
-		#msg_color = input_color
 		print "color is " + input_color
 		msg_color = colors[int(input_color)]
 		end_loop = True
@@ -96,7 +88,7 @@ def ask_for_color():
 	colors_zero_indexed = len(colors) -1
 	end_loop = False
 	while True:
-		msg = "Color? (0-" + str(colors_zero_indexed) + "), l,d"
+		msg = "Color? (0-" + str(colors_zero_indexed) + "), l"
 		out_to_sign(msg, msg_color, msg_mode, msg_font)
 		choicereturn = colorchoice(colorstring)
 		print(choicereturn)
