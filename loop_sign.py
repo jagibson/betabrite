@@ -37,16 +37,18 @@ def colordemo():
 def fontdemo():
 	for font in fonts:
 		msg_font = font
-		msg = font
+		#msg_mode = "HOLD"
+		msg = "(" + str(fonts.index(font)) + ")-" + font
 		out_to_sign(msg, msg_color, msg_mode, msg_font)
 		time.sleep(5)
 
 def modedemo():
 	for mode in modes:
 		msg_mode = mode
-		msg = mode
+		msg = "(" + str(modes.index(mode)) + ")-" + mode
+		#msg = mode
 		out_to_sign(msg, msg_color, msg_mode, msg_font)
-		time.sleep(10)
+		time.sleep(4)
 
 def out_to_sign(msg, color, mode, font):
 	color = getattr(alphasign.colors, color)
@@ -59,7 +61,7 @@ def out_to_sign(msg, color, mode, font):
 	sign.write(text)
 
 def ask_for_input(msg_color):
-	msg_font = 'FIVE_HIGH_STD'
+	#msg_font = 'FIVE_HIGH_STD'
 	msg = "Type your message"
 	out_to_sign(msg, msg_color, msg_mode, msg_font)
 	msg = raw_input()
@@ -69,14 +71,17 @@ def colorchoice(colorstring):
 	global msg_color
 	end_loop = False
 	input_color = raw_input()
-	if input_color in (["l","L"]):
+	if input_color == '':
+		msg_color = msg_color
+		end_loop = True
+	elif input_color in (["l","L"]):
 		colordemo()
 	elif input_color in str(range(len(colors))):
 		print "color is " + input_color
 		msg_color = colors[int(input_color)]
 		end_loop = True
 	else:
-		print "failed to match"
+		msg_color = msg_color
 	return (msg_color, end_loop)
 
 
@@ -97,6 +102,77 @@ def ask_for_color():
 			return choicereturn[0]
 			break
 
+def fontchoice(fontstring):
+	global msg_font
+	end_loop = False
+	input_font = raw_input()
+	if input_font == '':
+		msg_font = msg_font
+		end_loop = True
+	elif input_font in (["l","L"]):
+		fontdemo()
+	elif input_font in str(range(len(fonts))):
+		print "font is " + input_font
+		msg_font = fonts[int(input_font)]
+		end_loop = True
+	else:
+		print "failed to match"
+	return (msg_font, end_loop)
+
+def ask_for_font():
+	#global msg_color
+	#global msg_mode
+	fontstring = ''
+	msg_font = 'FIVE_HIGH_STD'
+	msg_mode = 'HOLD'
+	msg_color = 'RED'
+	fonts_zero_indexed = len(fonts) -1
+	end_loop = False
+	while True:
+		msg = "Font? (0-" + str(fonts_zero_indexed) + "), l"
+		out_to_sign(msg, msg_color, msg_mode, msg_font)
+		choicereturn = fontchoice(fontstring)
+		print(choicereturn)
+		end_loop = choicereturn[1]
+		if end_loop:
+			return choicereturn[0]
+			break
+
+
+def modechoice(modestring):
+	global msg_mode
+	end_loop = False
+	input_mode = raw_input()
+	if input_mode == '':
+		msg_mode == msg_mode
+		end_loop = True
+	elif input_mode in (["l","L"]):
+		modedemo()
+	elif input_mode in str(range(len(modes))):
+		print "mode is " + input_mode
+		msg_mode = modes[int(input_mode)]
+		end_loop = True
+	else:
+		print "failed to match"
+	return (msg_mode, end_loop)
+
+def ask_for_mode():
+	modestring = ''
+	msg_mode = 'FIVE_HIGH_STD'
+	msg_mode = 'HOLD'
+	msg_color = 'RED'
+	modes_zero_indexed = len(modes) -1
+	end_loop = False
+	while True:
+		msg = "Mode? (0-" + str(modes_zero_indexed) + "), l"
+		out_to_sign(msg, msg_color, msg_mode, msg_font)
+		choicereturn = modechoice(modestring)
+		print(choicereturn)
+		end_loop = choicereturn[1]
+		if end_loop:
+			return choicereturn[0]
+			break
+
 
 
 def main():
@@ -110,6 +186,8 @@ def main():
 	#reset_sign()
 	#static_test()
 	msg_color=ask_for_color()
+	msg_font=ask_for_font()
+	msg_mode=ask_for_mode()
 	ask_for_input(msg_color)
 
 if __name__ == "__main__":
