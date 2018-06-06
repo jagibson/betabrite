@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import alphasign
 import time
+import itertools
 
 sign_device='/dev/ttyUSB0'
 
@@ -64,14 +65,9 @@ def ask_for_input(msg_color):
 	msg = raw_input()
 	out_to_sign(msg, msg_color, msg_mode, msg_font)
 
-def ask_for_color():
-	colorstring = ''
-	msg_font = 'FIVE_HIGH_STD'
-	msg_mode = 'HOLD'
-	msg_color = 'RED'
-	colors_zero_indexed = len(colors) -1
-	msg = "Color? (0-" + str(colors_zero_indexed) + "), l,d"
-	out_to_sign(msg, msg_color, msg_mode, msg_font)
+def colorchoice(colorstring):
+	global msg_color
+	end_loop = False
 	input_color = raw_input()
 	if input_color in (["l","L"]):
 		msg_mode = 'ROTATE'
@@ -79,19 +75,35 @@ def ask_for_color():
 			colorstring = colorstring + "(" + str(colors.index(color)) + ")-" + color + "   "
 		msg = colorstring
 		out_to_sign(msg, msg_color, msg_mode, msg_font)
+		time.sleep(11)
 	elif input_color in (["d","D"]):
 		colordemo()
 	elif input_color in str(range(len(colors))):
 		#msg_color = input_color
 		print "color is " + input_color
 		msg_color = colors[int(input_color)]
+		end_loop = True
 	else:
 		print "failed to match"
-	#out_to_sign(msg, msg_color, msg_mode, msg_font)
-	return msg_color
+	return (msg_color, end_loop)
 
 
-
+def ask_for_color():
+	colorstring = ''
+	msg_font = 'FIVE_HIGH_STD'
+	msg_mode = 'HOLD'
+	msg_color = 'RED'
+	colors_zero_indexed = len(colors) -1
+	end_loop = False
+	while True:
+		msg = "Color? (0-" + str(colors_zero_indexed) + "), l,d"
+		out_to_sign(msg, msg_color, msg_mode, msg_font)
+		choicereturn = colorchoice(colorstring)
+		print(choicereturn)
+		end_loop = choicereturn[1]
+		if end_loop:
+			return choicereturn[0]
+			break
 
 
 
