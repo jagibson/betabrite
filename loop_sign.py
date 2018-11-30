@@ -191,5 +191,8 @@ def main():
 	ask_for_input(msg_color)
 	just_wait = raw_input()
 
-if __name__ == "__main__":
- 	main()
+#if __name__ == "__main__":
+# 	main()
+
+while True:
+	main()
