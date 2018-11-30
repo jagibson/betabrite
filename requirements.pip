@@ -1,6 +1,8 @@
 git+https://github.com/jagibson/alphasign
+constants
+interfaces
 #alphasign
-AWSIoTPythonSDK
+#AWSIoTPythonSDK
 #Flask
 #uwsgi
-cherrypy
+#cherrypy
